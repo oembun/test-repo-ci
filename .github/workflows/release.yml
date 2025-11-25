@@ -1,0 +1,37 @@
+name: Crear Release y Artefacto Personalizado
+
+on:
+  push:
+    tags:
+      - 'v*' # Se ejecuta solo si se hace push de un tag que empiece con 'v'
+
+jobs:
+  build_release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Necesario para crear la Release
+
+    steps:
+      - name: Checkout del Código
+        uses: actions/checkout@v4
+
+      # 1. Crear el .tar.gz personalizado con exclusiones
+      - name: Crear Tarball Excluyendo .git y .github
+        run: |
+          # Obtenemos el nombre del tag para usarlo en el nombre del archivo
+          TAG_NAME=${{ github.ref_name }}
+
+          # Comando tar para crear el archivo excluyendo los directorios
+          tar --exclude='{.git,.github}' -czf ${TAG_NAME}.tar.gz .
+
+      # 2. Crear la Release y subir el archivo como asset
+      - name: Crear GitHub Release con Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          # El token de GitHub se proporciona automáticamente
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+          # La acción detecta automáticamente el tag.
+          # Subimos el archivo .tar.gz que creamos en el paso anterior.
+          files: |
+            ${{ github.ref_name }}.tar.gz
