@@ -23,7 +23,7 @@ jobs:
           FILE_NAME=myfile_${TAG_NAME}
 
           # Comando tar para crear el archivo excluyendo los directorios
-          tar --exclude='./.git' --exclude='./.github' -czf /${FILE_NAME}.tar.gz .
+          tar --exclude='./.git' --exclude='./.github' -czf /tmp/${FILE_NAME}.tar.gz .
           mkdir mis_releases
           mv /tmp/${FILE_NAME}.tar.gz ./mis_releases/
 
