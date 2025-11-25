@@ -37,4 +37,4 @@ jobs:
           # La acción detecta automáticamente el tag.
           # Subimos el archivo .tar.gz que creamos en el paso anterior.
           files: |
-            ${{ github.ref_name }}.tar.gz
+            ${FILE_NAME}.tar.gz
