@@ -22,7 +22,8 @@ jobs:
           TAG_NAME=${{ github.ref_name }}
 
           # Comando tar para crear el archivo excluyendo los directorios
-          tar --exclude='{.git,.github,*.tar.gz}' -czf ${TAG_NAME}.tar.gz .
+          tar --exclude='{.git,.github,*.tar.gz}' -czf /tmp/${TAG_NAME}.tar.gz .
+          mv /tmp/${TAG_NAME}.tar.gz .
 
       # 2. Crear la Release y subir el archivo como asset
       - name: Crear GitHub Release con Assets
